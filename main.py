@@ -11,7 +11,7 @@ surface.set_ylabel("cores_label_y")
 surface.set_zlabel("cores_label_z")
 
 def trajectory(data_type):
-    datacores = pd.read_csv("data.csv")
+    datacores = pd.read_json("data.csv")
     if data_type != "grid":
         x_cores, y_cores, z_cores = [], [], []
         def trajectory_visualisation(time):
@@ -23,19 +23,18 @@ def trajectory(data_type):
         anim = manimation.FuncAnimation(figure, trajectory_visualisation, interval=99)
 
     else:
-
         x_cores = np.asarray(datacores.iloc[:, 0:100])
         y_cores = np.asarray(datacores.iloc[:, 100:200])
         z_cores = np.asarray(datacores.iloc[:, 200:300])
-        surface.plot_surface(x_cores, y_cores, z_cores)
         i, j, k = [], [], []
-        """def surface_simulation(time):
+        def surface_simulation(time):
             surface.clear()
             i = x_cores[:, 0:time]
             j = y_cores[:, 0:time]
             k = z_cores[:, 0:time]
-            surface.plot_surface(i, j, k, alpha=0.3)
-        anim = manimation.FuncAnimation(figure, surface_simulation, interval=100)"""
+            surface.plot_surface(i, j, k, alpha=0.7, cmap="coolwarm")
+            surface.scatter(i, j, k, c=k, cmap="binary", s=0.10)
+        anim = manimation.FuncAnimation(figure, surface_simulation, interval=100)
 
     plt.show()
 
@@ -46,9 +45,7 @@ def create_new_datacores(x, y, z, file_name="data.csv"):
     except ValueError:
         print("[grid refactoring]!!!")
         cores = pd.DataFrame(np.hstack((x, y, z)))
-        print(cores)
-        surface.plot_surface(np.asarray(cores.iloc[:, 0:100]), np.asarray(cores.iloc[:, 100:200]), np.asarray(cores.iloc[:, 200:300]))
-        cores.to_csv(file_name)
+        cores.to_json(file_name)
 
 
     
@@ -58,7 +55,7 @@ theta, psi = np.meshgrid(np.linspace(-np.pi, np.pi, 100),
 
 x_cores, y_cores = np.meshgrid(np.linspace(-np.pi, np.pi, 100),
                                np.linspace(-np.pi, np.pi, 100))
-z_cores = np.sin(np.sqrt(x_cores ** 2 +  y_cores ** 2)) / np.sqrt(x_cores ** 2 + y_cores ** 2)
+z_cores = np.sin(np.sqrt(x_cores ** 2 +  y_cores ** 2) + np.exp(x_cores ** 2 + y_cores ** 2)) / np.sqrt(x_cores ** 2 + y_cores ** 2)
 
 create_new_datacores(x_cores, y_cores, z_cores)
 #surface.plot_surface(x_cores, y_cores, z_cores)
