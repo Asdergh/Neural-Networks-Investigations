@@ -5,9 +5,7 @@ import matplotlib.animation as manimation
 import math as mt
 import random as rd
 
-
-
-
+plt.style.use("dark_background")
 class DATA_Vis():
 
     def __init__(self, file_name) -> None:
@@ -37,7 +35,8 @@ class DATA_Vis():
         
         def graph_trajectory(time):
             self.plane.clear()
-            self.plane.plot(self.x_cores[0:time], self.y_cores[0:time], self.z_cores[0:time], alpha=0.5, color="blue", linestyle="--")
+            self.plane.scatter(self.x_cores[0:time], self.y_cores[0:time], self.z_cores[0:time], c=self.z_cores[0:time], alpha=0.5, cmap="twilight", s=1.23)
+            self.plane.plot(self.x_cores[0:time], self.y_cores[0:time], self.z_cores[0:time], linestyle="--", color="gray", alpha=0.1)
             self.plane.scatter(self.x_cores[time], self.y_cores[time], self.z_cores[time], alpha=0.2, color="red")
             self.plane.quiver(self.x_cores[time], self.y_cores[time], self.z_cores[time], self.x_cores[time + 1], 0, 0, color="red")
             self.plane.quiver(self.x_cores[time], self.y_cores[time], self.z_cores[time], 0, self.y_cores[time + 1], 0, color="blue")
@@ -70,7 +69,6 @@ xyz[0] = (0., 1., 1.05)
 for iter in range(10000):
     xyz[iter + 1] = xyz[iter] + lorenc(xyz[iter]) * dt
 #xyz = xyz.T
-
 cores = pd.DataFrame(xyz)
 print(cores.to_numpy().shape)
 cores.to_json("trajectory.json")
