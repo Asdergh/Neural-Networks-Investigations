@@ -6,7 +6,8 @@
 class MatrixOperations
 {
     public:
-        void matrix_mul(int **result_matrix, int **matrix_one, int **matrix_two, const int MATRIX_ONE_ROWS, const int MATRIX_TWO_ROWS, const int MATRIX_ONE_COLUMNS, const int MATRIX_TWO_COLUMNS){
+        void matrix_mul(int result_matrix[][], int matrix_one[][], int matrix_two[][], const int MATRIX_ONE_ROWS, const int MATRIX_TWO_ROWS, const int MATRIX_ONE_COLUMNS, const int MATRIX_TWO_COLUMNS)
+        {
             if (MATRIX_ONE_ROWS == MATRIX_TWO_COLUMNS){
                 for (int iter_i = 0; iter_i < MATRIX_ONE_ROWS; iter_i ++)
                 {
@@ -25,13 +26,24 @@ class MatrixOperations
 
 int main(){
 
+    MatrixOperations mat;
     const int SIZE = 123;
+    const int SIZE_C = 12;
     int matrix_for_test[SIZE];
     int *pmatrix_for_test = matrix_for_test;
 
     std::cout << "\n---------------\n" <<"array head adress by [matrix_for_test] item:\t" << matrix_for_test << "\n============\n" << "array head adress by [pmatrix_for_test] item:\t" << pmatrix_for_test << "\n---------------\n";
     for (int iter = 0; iter < SIZE; iter ++){matrix_for_test[iter] = rand() % 30;}
     for (int iter = 0; iter < SIZE; iter ++){std::cout << "============\n" << "adress:\t" << &pmatrix_for_test[iter] << "\n" << "iter:\t" << matrix_for_test[iter] << "\n============";}
+
+    std::cout << "\n----------------------\n";
+
+    int matrix_one[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+    int matrix_two[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+    int result_test_matrix[3][3];
+
+    mat.matrix_mul(result_test_matrix, matrix_one, matrix_two, 3, 3, 3, 3);
+    std::cout << "results:\t" << result_test_matrix;
 
     return 0;
 
